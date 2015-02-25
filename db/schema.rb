@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225025527) do
+ActiveRecord::Schema.define(version: 20150225052812) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -22,6 +22,32 @@ ActiveRecord::Schema.define(version: 20150225025527) do
   end
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id"
+
+  create_table "meetings", force: true do |t|
+    t.string   "title"
+    t.string   "address"
+    t.text     "description"
+    t.decimal  "latitude",    precision: 10, scale: 6
+    t.decimal  "longitude",   precision: 10, scale: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "meetings_users", force: true do |t|
+    t.integer  "meeting_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "meetings_users", ["meeting_id", "user_id"], name: "index_meetings_users_on_meeting_id_and_user_id", unique: true
+
+  create_table "recordings", force: true do |t|
+    t.string   "s3_url"
+    t.integer  "meeting_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
